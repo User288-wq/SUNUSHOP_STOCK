@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: sunushop-postgres
+    environment:
+      POSTGRES_DB: sunushop
+      POSTGRES_USER: sunu
+      POSTGRES_PASSWORD: sunu123
+    ports:
+      - "5433:5432"
+    volumes:
+      - sunushop_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  sunushop_postgres_data:
