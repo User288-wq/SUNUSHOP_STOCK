@@ -1,0 +1,61 @@
+services:
+  # ===== BASE DE DONNÉES =====
+  postgres:
+    image: postgres:15
+    container_name: sunushop-postgres
+    environment:
+      POSTGRES_DB: sunushop
+      POSTGRES_USER: sunu
+      POSTGRES_PASSWORD: sunu123
+    ports:
+      - "5433:5432"
+    volumes:
+      - sunushop_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sunu"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sunushop-network
+
+  # ===== BACKEND SPRING BOOT =====
+  backend:
+    build:
+      context: ./sunushop-backend
+      dockerfile: Dockerfile
+    container_name: sunushop-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://postgres:5432/sunushop
+      DB_USERNAME: sunu
+      DB_PASSWORD: sunu123
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sunushop-network
+    restart: unless-stopped
+
+  # ===== FRONTEND ANGULAR =====
+  frontend:
+    build:
+      context: ./sunushop-frontend
+      dockerfile: Dockerfile
+    container_name: sunushop-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - sunushop-network
+    restart: unless-stopped
+
+volumes:
+  sunushop_postgres_data:
+
+networks:
+  sunushop-network:
+    driver: bridge
