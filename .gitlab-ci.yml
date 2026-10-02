@@ -53,12 +53,12 @@ frontend-install:
 
 frontend-test:
   stage: frontend-test
-  image: node:20-alpine
+  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46
   script:
     - echo "Tests frontend"
     - cd sunushop-frontend
     - npm ci
-    - npm test -- --watch=false --browsers=ChromeHeadless
+    - npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
   only:
     - main
     - merge_requests
@@ -71,5 +71,9 @@ frontend-build:
     - cd sunushop-frontend
     - npm ci
     - npm run build -- --configuration production
+  artifacts:
+    paths:
+      - sunushop-frontend/dist/
+    expire_in: 1 week
   only:
     - main
