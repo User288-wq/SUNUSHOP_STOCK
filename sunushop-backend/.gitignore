@@ -7,3 +7,4 @@ target/
 body.json
 create-*.ps1
 fix-bom.ps1
+../README.md
