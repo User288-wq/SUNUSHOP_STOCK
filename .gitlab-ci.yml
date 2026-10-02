@@ -1,0 +1,92 @@
+# ============================================
+# PIPELINE CI/CD - MONOREPO SUNUSHOP
+# ============================================
+
+stages:
+  - backend-build
+  - backend-test
+  - frontend-install
+  - frontend-test
+  - frontend-build
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+    - sunushop-frontend/node_modules/
+
+backend-build:
+  stage: backend-build
+  image: maven:3.8-openjdk-17
+  script:
+    - echo "=== Build backend ==="
+    - cd sunushop-backend
+    - mvn clean compile -B
+  artifacts:
+    paths:
+      - sunushop-backend/target/classes/
+    expire_in: 1 hour
+  only:
+    - main
+    - merge_requests
+
+backend-test:
+  stage: backend-test
+  image: maven:3.8-openjdk-17
+  script:
+    - echo "=== Tests backend ==="
+    - cd sunushop-backend
+    - mvn test -B
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - sunushop-backend/target/surefire-reports/TEST-*.xml
+    expire_in: 1 week
+  only:
+    - main
+    - merge_requests
+
+frontend-install:
+  stage: frontend-install
+  image: node:20-alpine
+  script:
+    - echo "=== Installation frontend ==="
+    - cd sunushop-frontend
+    - npm ci
+  artifacts:
+    paths:
+      - sunushop-frontend/node_modules/
+    expire_in: 1 hour
+  only:
+    - main
+    - merge_requests
+
+frontend-test:
+  stage: frontend-test
+  image: node:20-alpine
+  script:
+    - echo "=== Tests frontend ==="
+    - cd sunushop-frontend
+    - npm ci
+    - npm test -- --watch=false --browsers=ChromeHeadless
+  only:
+    - main
+    - merge_requests
+
+frontend-build:
+  stage: frontend-build
+  image: node:20-alpine
+  script:
+    - echo "=== Build frontend ==="
+    - cd sunushop-frontend
+    - npm ci
+    - npm run build -- --configuration production
+  artifacts:
+    paths:
+      - sunushop-frontend/dist/
+    expire_in: 1 week
+  only:
+    - main
