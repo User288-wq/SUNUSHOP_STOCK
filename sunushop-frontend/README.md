@@ -1,59 +1,110 @@
-# SunushopFrontend
+# SunuShop Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
+![Tests](https://img.shields.io/badge/tests-10%20passed-brightgreen)
+![Angular](https://img.shields.io/badge/Angular-19-red)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED)
 
-## Development server
+Interface Angular pour l'application de gestion de stocks SunuShop.
 
-To start a local development server, run:
+## Technologies
 
-```bash
-ng serve
-```
+- **Angular 19** - Framework
+- **TypeScript 5.2** - Langage
+- **RxJS 7.8** - Programmation reactive
+- **HttpClient** - Communication API
+- **Jasmine + Karma** - Tests unitaires (10 tests, 100%)
+- **Nginx** - Serveur de production
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Fonctionnalites
 
-## Code scaffolding
+- Dashboard avec statistiques (4 cartes + graphique)
+- Liste des articles (tableau avec stock disponible)
+- Formulaire de creation d'article
+- Formulaire de mouvement de stock (reception/sortie/ajustement)
+- Liste des reservations actives
+- Formulaire de creation de reservation
+- Design moderne et responsive
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Structure
 
-```bash
-ng generate component component-name
-```
+    src/app/
+    ├── core/
+    │   └── services/         # Services HTTP (Article, Stock, Reservation)
+    ├── shared/
+    │   └── models/           # Interfaces TypeScript
+    ├── features/
+    │   ├── dashboard/        # Page d'accueil avec stats
+    │   ├── articles/         # Liste + Formulaire
+    │   ├── stocks/           # Formulaire de mouvement
+    │   └── reservations/     # Liste + Formulaire
+    ├── app.component.ts      # Composant racine
+    ├── app.config.ts         # Configuration (HttpClient)
+    └── app.routes.ts         # Routes de l'application
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Routes
 
-```bash
-ng generate --help
-```
+| Route | Description |
+|-------|-------------|
+| / | Redirection vers /dashboard |
+| /dashboard | Tableau de bord avec statistiques |
+| /articles | Liste des articles |
+| /articles/new | Formulaire de creation d'article |
+| /stocks/movement | Formulaire de mouvement |
+| /reservations | Liste des reservations |
+| /reservations/new | Formulaire de reservation |
 
-## Building
+## Installation
 
-To build the project run:
+### Prerequis
+- Node.js 20+
+- npm 10+
 
-```bash
-ng build
-```
+### Lancement local
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+    # 1. Installer les dependances
+    npm install
 
-## Running unit tests
+    # 2. Lancer le serveur de developpement
+    npm start
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+L'application demarre sur **http://localhost:4200**
 
-```bash
-ng test
-```
+## Tests
 
-## Running end-to-end tests
+    npm test
 
-For end-to-end (e2e) testing, run:
+**10 tests - 100% de reussite**
 
-```bash
-ng e2e
-```
+## Build de production
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+    npm run build
 
-## Additional Resources
+Les fichiers sont generes dans `dist/sunushop-frontend/browser/`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Docker
+
+    # Build de l'image
+    docker build -t sunushop-frontend .
+
+    # Lancer avec docker compose (depuis la racine)
+    docker compose up -d frontend
+
+## Configuration
+
+Le fichier `proxy.conf.json` redirige les appels `/api/*` vers `http://localhost:8081`.
+
+Pour le deploiement Docker, Nginx fait le proxy inverse (voir `nginx.conf`).
+
+## Backend
+
+Le backend Spring Boot est disponible sur :
+**https://gitlab.com/diaraf1993diouf/sunushop-backend**
+
+## Auteur
+
+**Diaraf Diouf** - Developpeur Full-Stack
+
+## Licence
+
+Proprietaire - SunuShop

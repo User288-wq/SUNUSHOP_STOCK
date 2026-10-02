@@ -1,0 +1,84 @@
+stages:
+  - install
+  - test
+  - build
+  - docker
+
+variables:
+  NODE_VERSION: "20"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules/
+
+# ===== STAGE 1 : INSTALL =====
+install:
+  stage: install
+  image: node:20-alpine
+  script:
+    - echo "=== Installation des dependances ==="
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# ===== STAGE 2 : TEST =====
+test:
+  stage: test
+  image: node:20-alpine
+  script:
+    - echo "=== Execution des tests ==="
+    - npm ci
+    - npm test -- --watch=false --browsers=ChromeHeadless
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# ===== STAGE 3 : BUILD =====
+build:
+  stage: build
+  image: node:20-alpine
+  script:
+    - echo "=== Build de production ==="
+    - npm ci
+    - npm run build -- --configuration production
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+  only:
+    - main
+
+# ===== STAGE 4 : DOCKER =====
+docker-build:
+  stage: docker
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    IMAGE_LATEST: $CI_REGISTRY_IMAGE:latest
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - echo "=== Build de l'image Docker ==="
+    - docker build -t $IMAGE_TAG -t $IMAGE_LATEST .
+    - echo "=== Push des images ==="
+    - docker push $IMAGE_TAG
+    - docker push $IMAGE_LATEST
+  only:
+    - main
+  when: manual
