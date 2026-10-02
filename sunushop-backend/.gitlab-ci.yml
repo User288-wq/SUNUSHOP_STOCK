@@ -6,13 +6,11 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
 
 cache:
   paths:
     - .m2/repository/
 
-# ===== STAGE 1 : BUILD =====
 build:
   stage: build
   image: maven:3.8-openjdk-17
@@ -28,7 +26,6 @@ build:
     - develop
     - merge_requests
 
-# ===== STAGE 2 : TEST =====
 test:
   stage: test
   image: maven:3.8-openjdk-17
@@ -49,7 +46,6 @@ test:
     - develop
     - merge_requests
 
-# ===== STAGE 3 : PACKAGE =====
 package:
   stage: package
   image: maven:3.8-openjdk-17
@@ -63,7 +59,6 @@ package:
   only:
     - main
 
-# ===== STAGE 4 : DOCKER =====
 docker-build:
   stage: docker
   image: docker:24
@@ -76,7 +71,7 @@ docker-build:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - echo "=== Build de l'image Docker ==="
+    - echo "=== Build de l image Docker ==="
     - docker build -t $IMAGE_TAG -t $IMAGE_LATEST .
     - echo "=== Push des images ==="
     - docker push $IMAGE_TAG
