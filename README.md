@@ -1,111 +1,100 @@
-# SunuShop Stock Management - Full Stack
+# 📦 SunuShop Stock - Application Full-Stack
+
+Application de gestion de stock multi-entrepôts avec réservations Premium 48h et authentification JWT.
 
 [![Pipeline](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/badges/main/pipeline.svg)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/-/pipelines)
-[![Coverage](https://img.shields.io/badge/coverage-85%25-success)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/-/pipelines)
-[![Java](https://img.shields.io/badge/Java-17-orange)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-green)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack)
-[![Angular](https://img.shields.io/badge/Angular-19-red)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack)
+[![Coverage](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/badges/main/coverage.svg)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/-/pipelines)
+![Tests](https://img.shields.io/badge/tests-48%20passed-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-green)
+![Angular](https://img.shields.io/badge/Angular-17-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED)
+![JWT](https://img.shields.io/badge/JWT-Auth-000000)
 
-Application Full-Stack de gestion de stocks multi-entrepots pour grossiste en fournitures de bureau.
+---
 
-## Vue d'ensemble
+## 🎯 Aperçu
 
-Ce projet est compose de 2 applications :
+**SunuShop Stock** est une application full-stack dockerisée qui gère :
 
-| Application | Technologie | Dossier |
-|-------------|-------------|---------|
-| Backend | Java 17 + Spring Boot 3.2 | `sunushop-backend/` |
-| Frontend | Angular 19 + TypeScript | `sunushop-frontend/` |
+- 📦 **Articles** multi-entrepôts (CRUD complet)
+- 📊 **Mouvements de stock** (entrées/sorties)
+- 🔖 **Réservations clients Premium** (expiration 48h)
+- 📈 **Dashboard** avec statistiques
+- 🔐 **Authentification JWT** (register/login/logout)
 
-## Architecture
+---
 
-    Frontend Angular (port 4200)
-    - Dashboard, Articles, Reservations
-              |
-              | HTTP / REST
-              v
-    Backend Spring Boot (port 8081)
-    - API REST, Services, Repositories
-              |
-              | JDBC
-              v
-    PostgreSQL 15 (port 5433)
+## ✨ Fonctionnalités
 
-## Demarrage rapide avec Docker
+### 🔐 Authentification JWT
+- Inscription avec vérification d'unicité
+- Connexion avec BCrypt
+- Tokens JWT valides 24h
+- Protection des routes frontend (AuthGuard)
+- Intercepteur HTTP qui ajoute le token automatiquement
 
-Tout se lance avec une seule commande :
+### 📦 Module Articles
+- Création d'articles avec référence unique
+- Calcul automatique du stock disponible (physique - réservé)
+- Support multi-entrepôts (Dakar, Casablanca, Abidjan)
 
-    docker compose up -d
-
-Puis ouvrez :
-
-- Frontend : http://localhost:4200
-- Backend  : http://localhost:8081/api
-- Swagger  : http://localhost:8081/api/swagger-ui.html
-
-## Fonctionnalites
-
-- Gestion des articles (CRUD)
-- Mouvements de stock (receptions, sorties, ajustements)
+### 📊 Module Mouvements
+- Enregistrement des entrées (réceptions fournisseurs)
+- Enregistrement des sorties (ventes clients)
 - Historique complet par article
-- Reservations Premium avec expiration automatique 48h
-- Dashboard avec statistiques et graphiques
-- Gestion d'erreurs centralisee
-- Verrou optimiste pour la concurrence
+- Vérification du stock disponible avant sortie
 
-## Tests
+### 🔖 Module Réservations (Premium)
+- Réservations clients avec expiration automatique à 48h
+- Règle métier : **maximum 30% du stock physique**
+- Job planifié (`@Scheduled`) pour expirer les réservations
+- Annulation manuelle possible
 
-| Cote | Tests | Couverture |
-|------|-------|-----------|
-| Backend | 25 tests (JUnit 5 + Mockito) | 85% |
-| Frontend | 10 tests (Jasmine + Karma) | 100% |
-| **Total** | **35 tests** | - |
+### 📈 Dashboard
+- Statistiques en temps réel
+- Top 5 articles par stock
+- Répartition par catégorie
+- Réservations actives récentes
 
-## Structure du projet
+---
 
-    .
-    ├── docker-compose.yml
-    ├── README.md
-    ├── LICENSE
-    ├── sunushop-backend/
-    │   ├── Dockerfile
-    │   ├── pom.xml
-    │   ├── README.md
-    │   └── src/
-    └── sunushop-frontend/
-        ├── Dockerfile
-        ├── nginx.conf
-        ├── package.json
-        ├── README.md
-        └── src/
-
-## CI/CD
-
-Pipeline GitLab automatique sur chaque commit :
-
-1. Build backend (Maven)
-2. Tests backend (25 tests)
-3. Install frontend (npm)
-4. Tests frontend (10 tests)
-5. Build frontend (Angular production)
-
-## Technologies
+## 🛠️ Stack technique
 
 ### Backend
-Java 17, Spring Boot 3.2.1, Spring Data JPA, Hibernate 6, PostgreSQL 15, JUnit 5, Mockito, JaCoCo
+| Technologie | Version |
+|-------------|---------|
+| Java | 17 |
+| Spring Boot | 3.2.1 |
+| Spring Security | 6.2.1 |
+| Spring Data JPA | 3.2.1 |
+| Hibernate | 6.4.1 |
+| PostgreSQL | 15 |
+| JJWT | 0.11.5 |
+| Maven | 3.8 |
+| Lombok | 1.18.30 |
+| JUnit 5 + Mockito | 5.10.1 + 5.7.0 |
+| JaCoCo | 0.8.11 |
 
 ### Frontend
-Angular 19, TypeScript 5.2, RxJS 7.8, Jasmine, Karma
+| Technologie | Version |
+|-------------|---------|
+| Angular | 17 |
+| TypeScript | 5.2 |
+| RxJS | 7.8 |
+| Jasmine + Karma | 5.1 + 6.4 |
 
-### DevOps
-Docker, Docker Compose, Nginx, GitLab CI/CD, Maven, npm
+### Infrastructure
+| Technologie | Version |
+|-------------|---------|
+| Docker | 24+ |
+| Docker Compose | 2.x |
+| Nginx | alpine |
+| Node.js | 20 |
+| GitLab CI/CD | — |
 
-## Auteur
+---
 
-Diaraf Diouf - Developpeur Full-Stack Java/JEE
-
-## Licence
-
-Proprietaire - SunuShop
+## 🏗️ Architecture
