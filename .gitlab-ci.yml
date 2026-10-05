@@ -62,10 +62,10 @@ frontend-test:
   stage: frontend-test
   image: cypress/browsers:22.19.0
   script:
-    - echo "Tests frontend"
+    - echo "Tests frontend avec coverage"
     - cd sunushop-frontend
     - npm ci
-    - npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox --code-coverage
+    - npm run test:ci
   coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
   artifacts:
     when: always
