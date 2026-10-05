@@ -1,14 +1,15 @@
 stages:
   - backend-build
   - backend-test
-  - frontend-install
   - frontend-test
   - frontend-build
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  CHROME_BIN: /usr/bin/google-chrome
 
 cache:
+  key: "${CI_COMMIT_REF_SLUG}"
   paths:
     - .m2/repository/
     - sunushop-frontend/node_modules/
@@ -47,24 +48,13 @@ backend-test:
     - main
     - merge_requests
 
-frontend-install:
-  stage: frontend-install
-  image: node:20-alpine
-  script:
-    - echo "Install frontend"
-    - cd sunushop-frontend
-    - npm ci
-  only:
-    - main
-    - merge_requests
-
 frontend-test:
   stage: frontend-test
   image: cypress/browsers:22.19.0
   script:
-    - echo "Tests frontend avec coverage"
+    - echo "Install + Tests frontend avec coverage"
     - cd sunushop-frontend
-    - npm ci
+    - npm install
     - npm run test:ci
   coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
   artifacts:
@@ -82,7 +72,7 @@ frontend-build:
   script:
     - echo "Build frontend"
     - cd sunushop-frontend
-    - npm ci
+    - npm install
     - npm run build -- --configuration production
   artifacts:
     paths:
