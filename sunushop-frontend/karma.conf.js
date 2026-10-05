@@ -21,18 +21,18 @@ module.exports = function (config) {
       subdir: '.',
       reporters: [
         { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'text-summary' },
+        { type: 'lcovonly' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
+    reporters: ['progress', 'kjhtml', 'coverage'],
+    browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+        flags: ['--no-sandbox', '--disable-gpu']
       }
     },
-    restartOnFileChange: true,
-    singleRun: false
+    restartOnFileChange: true
   });
 };

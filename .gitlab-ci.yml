@@ -28,14 +28,21 @@ backend-test:
   stage: backend-test
   image: maven:3.8-openjdk-17
   script:
-    - echo "Tests backend"
+    - echo "Tests backend + JaCoCo"
     - cd sunushop-backend
-    - mvn test -B
+    - mvn verify -B
+  coverage: '/Total.*?([0-9]{1,3})%/'
   artifacts:
     when: always
     reports:
       junit:
         - sunushop-backend/target/surefire-reports/TEST-*.xml
+      coverage_report:
+        coverage_format: jacoco
+        path: sunushop-backend/target/site/jacoco/jacoco.xml
+    paths:
+      - sunushop-backend/target/site/jacoco/
+    expire_in: 1 week
   only:
     - main
     - merge_requests
@@ -58,7 +65,13 @@ frontend-test:
     - echo "Tests frontend"
     - cd sunushop-frontend
     - npm ci
-    - npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox
+    - npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox --code-coverage
+  coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
+  artifacts:
+    when: always
+    paths:
+      - sunushop-frontend/coverage/
+    expire_in: 1 week
   only:
     - main
     - merge_requests

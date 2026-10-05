@@ -1,11 +1,11 @@
-﻿# 📦 SunuShop Stock - Application Full-Stack
+# 📦 SunuShop Stock - Application Full-Stack
 
 Application de gestion de stock multi-entrepôts avec réservations Premium 48h et authentification JWT.
 
 [![Pipeline](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/badges/main/pipeline.svg)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/-/pipelines)
-[![Coverage](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/badges/main/coverage.svg)](https://gitlab.com/diaraf1993diouf/sunushop-fullstack/-/pipelines)
-![Tests](https://img.shields.io/badge/tests-48%20passed-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)
+[![Tests](https://img.shields.io/badge/tests-48%20passed-brightgreen)](#-tests)
+![Coverage Backend](https://img.shields.io/badge/coverage%20backend-88%25-brightgreen)
+![Coverage Frontend](https://img.shields.io/badge/coverage%20frontend-48%25-yellow)
 ![Java](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-green)
 ![Angular](https://img.shields.io/badge/Angular-19-red)
