@@ -52,3 +52,5 @@ logs/
 # ===== TESTS =====
 *.exec
 surefire-reports/
+# Clone de test
+sunushop-fullstack/
