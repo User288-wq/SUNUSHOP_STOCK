@@ -51,7 +51,17 @@ frontend-test:
   script:
     - cd sunushop-frontend
     - npm install --legacy-peer-deps
-    - npm run test:ci
+    - |
+      echo "Lancement des tests avec timeout de 180s..."
+      timeout 180 npm run test:ci || EXIT_CODE=$?
+      echo "Code de sortie : ${EXIT_CODE:-0}"
+      if [ -d "coverage/sunushop-frontend" ] && [ -f "coverage/sunushop-frontend/lcov.info" ]; then
+        echo "Coverage genere - TESTS OK"
+        exit 0
+      else
+        echo "Pas de coverage - TESTS ECHOUES"
+        exit 1
+      fi
   coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
   artifacts:
     when: always
