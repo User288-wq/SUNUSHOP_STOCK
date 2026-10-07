@@ -6,7 +6,6 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  CHROME_BIN: /usr/bin/google-chrome
 
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
@@ -18,7 +17,6 @@ backend-build:
   stage: backend-build
   image: maven:3.8-openjdk-17
   script:
-    - echo "Build backend"
     - cd sunushop-backend
     - mvn clean compile -B
   only:
@@ -29,7 +27,6 @@ backend-test:
   stage: backend-test
   image: maven:3.8-openjdk-17
   script:
-    - echo "Tests backend + JaCoCo"
     - cd sunushop-backend
     - mvn verify -B
   coverage: '/Total.*?([0-9]{1,3})%/'
@@ -50,11 +47,10 @@ backend-test:
 
 frontend-test:
   stage: frontend-test
-  image: cypress/browsers:22.19.0
+  image: trion/ng-cli-karma:19.2.0
   script:
-    - echo "Install + Tests frontend avec coverage"
     - cd sunushop-frontend
-    - npm install
+    - npm install --legacy-peer-deps
     - npm run test:ci
   coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
   artifacts:
@@ -70,9 +66,8 @@ frontend-build:
   stage: frontend-build
   image: node:20-alpine
   script:
-    - echo "Build frontend"
     - cd sunushop-frontend
-    - npm install
+    - npm install --legacy-peer-deps
     - npm run build -- --configuration production
   artifacts:
     paths:
