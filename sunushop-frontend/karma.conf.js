@@ -30,9 +30,15 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu']
+        flags: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
       }
     },
-    restartOnFileChange: true
+    singleRun: true,
+    autoWatch: false,
+    restartOnFileChange: false,
+    browserNoActivityTimeout: 60000,
+    browserDisconnectTimeout: 10000,
+    browserDisconnectTolerance: 3,
+    captureTimeout: 60000
   });
 };
