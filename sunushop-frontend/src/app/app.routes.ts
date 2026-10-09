@@ -6,6 +6,7 @@ import { ReservationListComponent } from './features/reservations/reservation-li
 import { ReservationFormComponent } from './features/reservations/reservation-form/reservation-form.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
 
   // Routes protegees
   { path: '', redirectTo: 'articles', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'articles', component: ArticleListComponent, canActivate: [authGuard] },
   { path: 'articles/new', component: ArticleFormComponent, canActivate: [authGuard] },
   { path: 'stocks/movement', component: MovementFormComponent, canActivate: [authGuard] },
