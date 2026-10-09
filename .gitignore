@@ -54,3 +54,6 @@ logs/
 surefire-reports/
 # Clone de test
 sunushop-fullstack/
+
+# Backups
+*.backup
