@@ -36,7 +36,7 @@ app:
     allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
 
 jwt:
-  secret: ${JWT_SECRET:default-secret-key-for-dev-only-min-256-bits-long-enough-for-hs256-algorithm}
+  secret: ${JWT_SECRET:SunuShopStock2026JwtSecretVeryLongStringForHs256AlgorithmMinimum256Bits}
 
 springdoc:
   api-docs:
