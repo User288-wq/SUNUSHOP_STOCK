@@ -1,12 +1,18 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DATABASE_USERNAME}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DATABASE_PASSWORD}}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: false
 
 server:
   port: ${PORT:8080}
@@ -23,16 +29,16 @@ management:
     health:
       show-details: always
 
-# ===== CORS (pour autoriser Vercel) =====
+# ===== CORS =====
 app:
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
 
 # ===== JWT =====
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:default-secret-key-for-dev-only-min-256-bits-long-enough}
 
-# ===== LOGGING (moins verbeux en prod) =====
+# ===== LOGGING =====
 logging:
   level:
     com.sunushop: INFO
