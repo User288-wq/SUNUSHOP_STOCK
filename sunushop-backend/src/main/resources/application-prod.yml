@@ -19,7 +19,6 @@ server:
   servlet:
     context-path: /api
 
-# ===== ACTUATOR =====
 management:
   endpoints:
     web:
@@ -29,16 +28,13 @@ management:
     health:
       show-details: always
 
-# ===== CORS =====
 app:
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
 
-# ===== JWT =====
 jwt:
   secret: ${JWT_SECRET:default-secret-key-for-dev-only-min-256-bits-long-enough}
 
-# ===== LOGGING =====
 logging:
   level:
     com.sunushop: INFO
