@@ -27,7 +27,7 @@ export interface CurrentUser {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = '/api/v2/auth';
+  private apiUrl = 'https://sunushop-backend.onrender.com/api/v2/auth';
   private readonly TOKEN_KEY = 'sunushop_token';
   private readonly USER_KEY = 'sunushop_user';
 
