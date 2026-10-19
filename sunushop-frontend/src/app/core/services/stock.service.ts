@@ -5,7 +5,7 @@ import { Movement, MovementRequest, MovementResponse } from '../../shared/models
 
 @Injectable({ providedIn: 'root' })
 export class StockService {
-  private apiUrl = '/api/v2/stocks';
+  private apiUrl = 'https://sunushop-backend.onrender.com/api/v2/stocks';
 
   constructor(private http: HttpClient) {}
 
