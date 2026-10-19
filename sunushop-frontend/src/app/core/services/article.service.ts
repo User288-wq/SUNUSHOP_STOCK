@@ -5,7 +5,7 @@ import { Article } from '../../shared/models/article.model';
 
 @Injectable({ providedIn: 'root' })
 export class ArticleService {
-  private apiUrl = '/api/v2/articles';
+  private apiUrl = 'https://sunushop-backend.onrender.com/api/v2/articles';
 
   constructor(private http: HttpClient) {}
 
