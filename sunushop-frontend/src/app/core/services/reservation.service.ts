@@ -5,7 +5,7 @@ import { Reservation, ReservationRequest } from '../../shared/models/reservation
 
 @Injectable({ providedIn: 'root' })
 export class ReservationService {
-  private apiUrl = '/api/v2/reservations';
+  private apiUrl = 'https://sunushop-backend.onrender.com/api/v2/reservations';
 
   constructor(private http: HttpClient) {}
 
