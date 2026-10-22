@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ArticleService } from '../../../core/services/article.service';
 import { Article } from '../../../shared/models/article.model';
+import { ToastrService } from 'ngx-toastr'; // <-- Ajouté
 
 @Component({
   selector: 'app-article-form',
@@ -76,13 +77,7 @@ import { Article } from '../../../shared/models/article.model';
             </span>
           </div>
 
-          <div class="alert success" *ngIf="successMessage">
-            {{ successMessage }}
-          </div>
-
-          <div class="alert error" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </div>
+          <!-- Les div alert success et error ont été supprimées, Toastr les remplace -->
 
           <div class="actions">
             <a routerLink="/articles" class="btn btn-secondary">Annuler</a>
@@ -90,7 +85,7 @@ import { Article } from '../../../shared/models/article.model';
               type="submit"
               class="btn btn-primary"
               [disabled]="form.invalid || submitting">
-              {{ submitting ? 'Création...' : 'Créer l article' }}
+              {{ submitting ? 'Création...' : "Créer l'article" }}
             </button>
           </div>
         </form>
@@ -108,9 +103,6 @@ import { Article } from '../../../shared/models/article.model';
     input:focus, select:focus { outline: none; border-color: #3498db; }
     input.invalid { border-color: #e74c3c; }
     .error { display: block; color: #e74c3c; font-size: 13px; margin-top: 6px; }
-    .alert { padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
-    .alert.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .alert.error { background: #ffe6e6; color: #c0392b; border: 1px solid #f5c6cb; }
     .actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ecf0f1; }
     .btn { padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; display: inline-block; }
     .btn-primary { background: #3498db; color: white; }
@@ -130,23 +122,20 @@ export class ArticleFormComponent {
   };
 
   submitting = false;
-  successMessage = '';
-  errorMessage = '';
 
   constructor(
     private articleService: ArticleService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService // <-- Injecté
   ) {}
 
   onSubmit(): void {
     this.submitting = true;
-    this.successMessage = '';
-    this.errorMessage = '';
 
     this.articleService.create(this.article).subscribe({
       next: (created) => {
-        console.log('Article créé :', created);
-        this.successMessage = 'Article ' + created.reference + ' créé avec succès !';
+        // On remplace le successMessage par une bulle verte
+        this.toastr.success(`Article ${created.reference} créé avec succès !`, 'Succès');
         this.submitting = false;
 
         setTimeout(() => {
@@ -155,8 +144,16 @@ export class ArticleFormComponent {
       },
       error: (err) => {
         console.error('Erreur:', err);
-        this.errorMessage = 'Erreur : ' + (err.error?.message || err.message || 'Création impossible');
         this.submitting = false;
+
+        // On regarde si l'erreur vient d'un doublon SQL (Status 500 ou 409)
+        const errorMsg = JSON.stringify(err.error) || '';
+        if (errorMsg.includes('duplicate key') || errorMsg.includes('existe deja')) {
+          this.toastr.error('Cette référence existe déjà. Veuillez en choisir une autre.', 'Doublon');
+        } else {
+          // Pour les autres erreurs, on affiche le message du serveur
+          this.toastr.error(err.error?.message || 'Erreur lors de la création', 'Erreur');
+        }
       }
     });
   }

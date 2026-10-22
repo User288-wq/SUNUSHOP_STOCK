@@ -98,7 +98,6 @@ import { ToastrService } from 'ngx-toastr';
     .btn-new { background: #27ae60; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; }
     .btn-new:hover { background: #229954; }
     
-    /* Nouveaux styles pour la recherche et la pagination */
     .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
     .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; outline: none; }
     .search-input:focus { border-color: #3498db; }
@@ -125,7 +124,6 @@ export class ArticleListComponent implements OnInit {
   articles: Article[] = [];
   loading = true;
   
-  // Variables pour la pagination et la recherche
   currentPage = 0;
   pageSize = 10;
   totalPages = 0;
@@ -143,10 +141,9 @@ export class ArticleListComponent implements OnInit {
 
   loadArticles(): void {
     this.loading = true;
-    // On appelle le service avec les paramètres de pagination
     this.articleService.getAll(this.currentPage, this.pageSize, this.searchQuery).subscribe({
       next: (response) => {
-        this.articles = response.content; // On récupère le tableau dans "content"
+        this.articles = response.content;
         this.totalPages = response.totalPages;
         this.totalElements = response.totalElements;
         this.loading = false;
@@ -160,7 +157,7 @@ export class ArticleListComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.currentPage = 0; // On retourne à la page 1 lors d'une nouvelle recherche
+    this.currentPage = 0;
     this.loadArticles();
   }
 
