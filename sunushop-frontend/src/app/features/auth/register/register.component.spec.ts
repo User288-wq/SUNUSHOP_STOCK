@@ -3,6 +3,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { RegisterComponent } from './register.component';
+import { provideToastr } from 'ngx-toastr'; // <-- Ajouté pour les tests
+import { provideAnimations } from '@angular/platform-browser/animations'; // <-- Ajouté pour les tests
 
 describe('RegisterComponent', () => {
   beforeEach(async () => {
@@ -11,7 +13,9 @@ describe('RegisterComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideRouter([])
+        provideRouter([]),
+        provideToastr(), // <-- Requis
+        provideAnimations() // <-- Requis
       ]
     }).compileComponents();
   });
