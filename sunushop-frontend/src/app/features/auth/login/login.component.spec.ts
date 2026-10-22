@@ -3,6 +3,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { LoginComponent } from './login.component';
+import { provideToastr } from 'ngx-toastr'; // <-- Ajouté
+import { provideAnimations } from '@angular/platform-browser/animations'; // <-- Ajouté
 
 describe('LoginComponent', () => {
   beforeEach(async () => {
@@ -11,7 +13,9 @@ describe('LoginComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideRouter([])
+        provideRouter([]),
+        provideToastr(), // <-- Requis pour les tests
+        provideAnimations() // <-- Requis pour les tests
       ]
     }).compileComponents();
   });
