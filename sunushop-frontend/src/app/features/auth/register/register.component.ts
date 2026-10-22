@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, RegisterRequest } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr'; // <-- Import ajouté
 
 @Component({
   selector: 'app-register',
@@ -76,13 +77,7 @@ import { AuthService, RegisterRequest } from '../../../core/services/auth.servic
             </small>
           </div>
 
-          <div class="alert error" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </div>
-
-          <div class="alert success" *ngIf="successMessage">
-            {{ successMessage }}
-          </div>
+          <!-- Les div "alert" ont été supprimées, on utilise Toastr à la place -->
 
           <button
             type="submit"
@@ -116,171 +111,77 @@ import { AuthService, RegisterRequest } from '../../../core/services/auth.servic
       width: 100%;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2c3e50;
-      margin: 0;
-      font-size: 28px;
-    }
-    .subtitle {
-      color: #7f8c8d;
-      margin: 5px 0 0 0;
-      font-size: 14px;
-    }
-    h2 {
-      color: #2c3e50;
-      margin: 0 0 8px 0;
-      font-size: 22px;
-    }
-    .hint {
-      color: #7f8c8d;
-      margin: 0 0 30px 0;
-      font-size: 14px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      color: #2c3e50;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+    .logo { text-align: center; margin-bottom: 30px; }
+    .logo h1 { color: #2c3e50; margin: 0; font-size: 28px; }
+    .subtitle { color: #7f8c8d; margin: 5px 0 0 0; font-size: 14px; }
+    h2 { color: #2c3e50; margin: 0 0 8px 0; font-size: 22px; }
+    .hint { color: #7f8c8d; margin: 0 0 30px 0; font-size: 14px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; color: #2c3e50; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
     input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid #e0e6ed;
-      border-radius: 8px;
-      font-size: 15px;
-      box-sizing: border-box;
-      transition: border-color 0.2s;
+      width: 100%; padding: 14px 16px; border: 2px solid #e0e6ed;
+      border-radius: 8px; font-size: 15px; box-sizing: border-box; transition: border-color 0.2s;
     }
-    input:focus {
-      outline: none;
-      border-color: #27ae60;
-    }
-    input:disabled {
-      background: #f5f7fa;
-      cursor: not-allowed;
-    }
-    .error-hint {
-      color: #e74c3c;
-      font-size: 12px;
-      margin-top: 6px;
-      display: block;
-    }
-    .alert {
-      padding: 14px 18px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
-    .alert.error {
-      background: #ffe6e6;
-      color: #c0392b;
-      border: 1px solid #f5c6cb;
-    }
-    .alert.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
+    input:focus { outline: none; border-color: #27ae60; }
+    input:disabled { background: #f5f7fa; cursor: not-allowed; }
+    .error-hint { color: #e74c3c; font-size: 12px; margin-top: 6px; display: block; }
     .btn-primary {
-      width: 100%;
-      padding: 14px;
-      background: #27ae60;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
+      width: 100%; padding: 14px; background: #27ae60; color: white;
+      border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;
     }
-    .btn-primary:hover:not(:disabled) {
-      background: #229954;
-    }
-    .btn-primary:disabled {
-      background: #bdc3c7;
-      cursor: not-allowed;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 25px;
-      padding-top: 25px;
-      border-top: 1px solid #ecf0f1;
-    }
-    .footer p {
-      color: #7f8c8d;
-      margin: 0 0 8px 0;
-      font-size: 14px;
-    }
-    .link {
-      color: #27ae60;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .link:hover {
-      text-decoration: underline;
-    }
+    .btn-primary:hover:not(:disabled) { background: #229954; }
+    .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; }
+    .footer { text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid #ecf0f1; }
+    .footer p { color: #7f8c8d; margin: 0 0 8px 0; font-size: 14px; }
+    .link { color: #27ae60; text-decoration: none; font-weight: 600; font-size: 14px; }
+    .link:hover { text-decoration: underline; }
   `]
 })
 export class RegisterComponent {
-  request: RegisterRequest = {
-    username: '',
-    password: '',
-    email: ''
-  };
-
+  request: RegisterRequest = { username: '', password: '', email: '' };
   confirmPassword = '';
   loading = false;
-  errorMessage = '';
-  successMessage = '';
+  
+  // errorMessage et successMessage ont été supprimées
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService // <-- Injecté
   ) {}
 
   onSubmit(): void {
     if (!this.request.username || !this.request.password) {
-      this.errorMessage = 'Veuillez remplir tous les champs obligatoires';
+      this.toastr.warning('Veuillez remplir tous les champs obligatoires', 'Attention');
       return;
     }
 
     if (this.request.password !== this.confirmPassword) {
-      this.errorMessage = 'Les mots de passe ne correspondent pas';
+      this.toastr.warning('Les mots de passe ne correspondent pas', 'Attention');
       return;
     }
 
     if (this.request.password.length < 6) {
-      this.errorMessage = 'Le mot de passe doit contenir au moins 6 caracteres';
+      this.toastr.warning('Le mot de passe doit contenir au moins 6 caracteres', 'Attention');
       return;
     }
 
     this.loading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
 
     this.authService.register(this.request).subscribe({
       next: (response) => {
-        this.successMessage = `Compte cree avec succes ! Redirection...`;
+        this.toastr.success('Compte créé avec succès !', 'Bienvenue');
         this.loading = false;
         setTimeout(() => this.router.navigate(['/articles']), 1500);
       },
       error: (err) => {
         console.error('Register error:', err);
         if (err.status === 400) {
-          this.errorMessage = err.error?.message || 'Donnees invalides';
+          this.toastr.error(err.error?.message || 'Données invalides', 'Erreur');
         } else if (err.status === 0) {
-          this.errorMessage = 'Impossible de contacter le serveur';
+          this.toastr.error('Impossible de contacter le serveur', 'Erreur réseau');
         } else {
-          this.errorMessage = err.error?.message || 'Erreur d\'inscription';
+          this.toastr.error(err.error?.message || 'Erreur d\'inscription', 'Erreur');
         }
         this.loading = false;
       }
