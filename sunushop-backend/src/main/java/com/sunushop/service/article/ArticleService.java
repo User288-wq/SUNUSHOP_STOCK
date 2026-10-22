@@ -5,11 +5,10 @@ import com.sunushop.model.dto.ArticleRequest;
 import com.sunushop.model.entity.Article;
 import com.sunushop.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +17,21 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public List<ArticleDto> getAllArticles() {
-        return articleRepository.findAll()
-            .stream()
-            .map(this::toDto)
-            .collect(Collectors.toList());
+    public Page<ArticleDto> getAllArticles(String search, Pageable pageable) {
+        Page<Article> articlePage;
+
+        if (search == null || search.trim().isEmpty()) {
+            // Aucun filtre, on récupère tout de manière paginée
+            articlePage = articleRepository.findAll(pageable);
+        } else {
+            // Filtre par désignation OU référence
+            articlePage = articleRepository.findByDesignationContainingIgnoreCaseOrReferenceContainingIgnoreCase(
+                search, search, pageable
+            );
+        }
+
+        // On transforme la Page<Article> en Page<ArticleDto> grâce à .map()
+        return articlePage.map(this::toDto);
     }
 
     @Transactional(readOnly = true)
