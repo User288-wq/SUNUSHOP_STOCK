@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-article-list',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  template: 
+  template: `
     <div class="container">
       <div class="header">
         <div>
@@ -27,7 +27,6 @@ import { ToastrService } from 'ngx-toastr';
         </div>
       </div>
 
-      <!-- Barre de recherche -->
       <div class="search-bar">
         <input 
           type="text" 
@@ -65,7 +64,6 @@ import { ToastrService } from 'ngx-toastr';
 
       <p *ngIf="!loading && articles.length === 0" class="empty">Aucun article trouvé.</p>
 
-      <!-- Pagination -->
       <div class="pagination" *ngIf="totalPages > 1">
         <button 
           (click)="previousPage()" 
@@ -84,8 +82,8 @@ import { ToastrService } from 'ngx-toastr';
         </button>
       </div>
     </div>
-  ,
-  styles: [
+  `,
+  styles: [`
     .container { padding: 30px; max-width: 1200px; margin: 0 auto; }
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
     h1 { color: #2c3e50; margin: 0 0 5px 0; }
@@ -122,7 +120,7 @@ import { ToastrService } from 'ngx-toastr';
     .btn-page:hover:not(:disabled) { background: #bdc3c7; }
     .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
     .page-info { font-weight: 600; color: #34495e; font-size: 15px; }
-  ]
+  `]
 })
 export class ArticleListComponent implements OnInit {
   articles: Article[] = [];
@@ -180,31 +178,23 @@ export class ArticleListComponent implements OnInit {
     }
   }
 
-  // ✅ NOUVELLE MÉTHODE POUR L'EXPORT CSV
   exportToCsv(): void {
     if (!this.articles || this.articles.length === 0) {
       this.toastr.warning('Aucun article à exporter', 'Attention');
       return;
     }
 
-    // Définition des en-têtes
     const headers = ['Référence', 'Désignation', 'Catégorie', 'Stock Physique', 'Stock Réservé', 'Stock Disponible'];
-    
-    // Création des lignes avec gestion des guillemets pour éviter les erreurs avec les virgules/points-virgules
     const rows = this.articles.map(a => [
       a.reference,
-      "",
+      `"${a.designation}"`,
       a.category,
       a.currentStockPhysical,
       a.currentStockReserved,
       (a.currentStockPhysical - a.currentStockReserved)
     ]);
 
-    // Le \uFEFF est un BOM UTF-8 pour qu'Excel affiche bien les accents (é, è, à)
-    // Le séparateur ';' est utilisé car Excel en français préfère le point-virgule
     const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(e => e.join(';'))].join('\n');
-    
-    // Création du fichier et téléchargement
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
