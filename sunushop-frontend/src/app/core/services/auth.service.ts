@@ -62,10 +62,9 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return false;
 
-    // Verifier expiration (JWT contient exp en secondes)
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const exp = payload.exp * 1000; // convertir en ms
+      const exp = payload.exp * 1000;
       return Date.now() < exp;
     } catch {
       return false;
@@ -74,6 +73,12 @@ export class AuthService {
 
   getCurrentUser(): CurrentUser | null {
     return this.currentUserSubject.value;
+  }
+
+  // ✅ NOUVELLE MÉTHODE POUR VÉRIFIER LE RÔLE
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === 'ADMIN' || user?.role === 'ROLE_ADMIN';
   }
 
   private saveAuth(response: AuthResponse): void {
