@@ -178,7 +178,7 @@ export class MovementFormComponent implements OnInit {
   ngOnInit(): void {
     this.articleService.getAll().subscribe({
       next: (data) => {
-        this.articles = data;
+        this.articles = data.content;
         console.log('Articles charges pour le formulaire:', data);
       },
       error: (err) => {

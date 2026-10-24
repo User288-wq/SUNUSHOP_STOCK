@@ -1,107 +1,77 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService, RegisterRequest } from '../../../core/services/auth.service';
-import { ToastrService } from 'ngx-toastr'; // <-- Ajouté
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { AuthService, AuthRequest } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="register-container">
-      <div class="register-card">
+    <div class="login-container">
+      <div class="login-card">
         <div class="logo">
           <h1>SunuShop Stock</h1>
           <p class="subtitle">Gestion de stock multi-entrepots</p>
         </div>
 
-        <h2>Creer un compte</h2>
-        <p class="hint">Inscrivez-vous pour acceder a l'application</p>
+        <h2>Connexion</h2>
+        <p class="hint">Connectez-vous pour acceder a l'application</p>
 
         <form (ngSubmit)="onSubmit()" #form="ngForm">
           <div class="form-group">
-            <label for="username">Nom d'utilisateur *</label>
+            <label for="username">Nom d'utilisateur</label>
             <input
               type="text"
               id="username"
               name="username"
-              [(ngModel)]="request.username"
+              [(ngModel)]="credentials.username"
               required
-              minlength="3"
               autocomplete="username"
-              placeholder="Choisissez un nom"
+              placeholder="admin"
               [disabled]="loading">
           </div>
 
           <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              [(ngModel)]="request.email"
-              autocomplete="email"
-              placeholder="votre@email.com"
-              [disabled]="loading">
-          </div>
-
-          <div class="form-group">
-            <label for="password">Mot de passe *</label>
+            <label for="password">Mot de passe</label>
             <input
               type="password"
               id="password"
               name="password"
-              [(ngModel)]="request.password"
+              [(ngModel)]="credentials.password"
               required
-              minlength="6"
-              autocomplete="new-password"
-              placeholder="Minimum 6 caracteres"
+              autocomplete="current-password"
+              placeholder="••••••••"
               [disabled]="loading">
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword">Confirmer le mot de passe *</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              [(ngModel)]="confirmPassword"
-              required
-              autocomplete="new-password"
-              placeholder="Retapez le mot de passe"
-              [disabled]="loading">
-            <small class="error-hint" *ngIf="confirmPassword && request.password !== confirmPassword">
-              Les mots de passe ne correspondent pas
-            </small>
           </div>
 
           <button
             type="submit"
             class="btn-primary"
-            [disabled]="form.invalid || loading || request.password !== confirmPassword">
-            {{ loading ? 'Inscription...' : 'Creer le compte' }}
+            [disabled]="form.invalid || loading">
+            {{ loading ? 'Connexion...' : 'Se connecter' }}
           </button>
         </form>
 
         <div class="footer">
-          <p>Deja un compte ?</p>
-          <a routerLink="/login" class="link">Se connecter</a>
+          <p>Pas encore de compte ?</p>
+          <a routerLink="/register" class="link">Creer un compte</a>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .register-container {
+    .login-container {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #2c3e50 0%, #27ae60 100%);
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
       padding: 20px;
     }
-    .register-card {
+    .login-card {
       background: white;
       border-radius: 16px;
       padding: 50px;
@@ -120,64 +90,57 @@ import { ToastrService } from 'ngx-toastr'; // <-- Ajouté
       width: 100%; padding: 14px 16px; border: 2px solid #e0e6ed;
       border-radius: 8px; font-size: 15px; box-sizing: border-box; transition: border-color 0.2s;
     }
-    input:focus { outline: none; border-color: #27ae60; }
+    input:focus { outline: none; border-color: #3498db; }
     input:disabled { background: #f5f7fa; cursor: not-allowed; }
-    .error-hint { color: #e74c3c; font-size: 12px; margin-top: 6px; display: block; }
     .btn-primary {
-      width: 100%; padding: 14px; background: #27ae60; color: white;
+      width: 100%; padding: 14px; background: #3498db; color: white;
       border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;
     }
-    .btn-primary:hover:not(:disabled) { background: #229954; }
+    .btn-primary:hover:not(:disabled) { background: #2980b9; }
     .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; }
     .footer { text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid #ecf0f1; }
     .footer p { color: #7f8c8d; margin: 0 0 8px 0; font-size: 14px; }
-    .link { color: #27ae60; text-decoration: none; font-weight: 600; font-size: 14px; }
+    .link { color: #3498db; text-decoration: none; font-weight: 600; font-size: 14px; }
     .link:hover { text-decoration: underline; }
   `]
 })
-export class RegisterComponent {
-  request: RegisterRequest = { username: '', password: '', email: '' };
-  confirmPassword = '';
+export class LoginComponent {
+  credentials: AuthRequest = {
+    username: '',
+    password: ''
+  };
   loading = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService // <-- Injecté
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   onSubmit(): void {
-    if (!this.request.username || !this.request.password) {
-      this.toastr.warning('Veuillez remplir tous les champs obligatoires', 'Attention');
-      return;
-    }
-
-    if (this.request.password !== this.confirmPassword) {
-      this.toastr.warning('Les mots de passe ne correspondent pas', 'Attention');
-      return;
-    }
-
-    if (this.request.password.length < 6) {
-      this.toastr.warning('Le mot de passe doit contenir au moins 6 caracteres', 'Attention');
+    if (!this.credentials.username || !this.credentials.password) {
+      this.toastr.warning('Veuillez remplir tous les champs', 'Attention');
       return;
     }
 
     this.loading = true;
 
-    this.authService.register(this.request).subscribe({
+    this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        this.toastr.success('Compte créé avec succès !', 'Bienvenue');
+        this.toastr.success(`Bienvenue ${response.username} !`, 'Connexion réussie');
         this.loading = false;
-        setTimeout(() => this.router.navigate(['/articles']), 1500);
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/articles';
+        setTimeout(() => this.router.navigate([returnUrl]), 800);
       },
       error: (err) => {
-        console.error('Register error:', err);
-        if (err.status === 400) {
-          this.toastr.error(err.error?.message || 'Données invalides', 'Erreur');
+        console.error('Login error:', err);
+        if (err.status === 401 || err.status === 403) {
+          this.toastr.error('Nom d\'utilisateur ou mot de passe incorrect', 'Erreur');
         } else if (err.status === 0) {
           this.toastr.error('Impossible de contacter le serveur', 'Erreur réseau');
         } else {
-          this.toastr.error(err.error?.message || 'Erreur d\'inscription', 'Erreur');
+          this.toastr.error(err.error?.message || 'Erreur de connexion', 'Erreur');
         }
         this.loading = false;
       }

@@ -249,7 +249,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.articleService.getAll().subscribe({
       next: (data) => {
-        this.articles = data;
+        this.articles = data.content;
         this.calculateStats();
         this.buildCharts();
         this.loading = false;

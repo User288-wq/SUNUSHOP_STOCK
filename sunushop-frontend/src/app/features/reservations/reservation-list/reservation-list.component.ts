@@ -119,7 +119,7 @@ export class ReservationListComponent implements OnInit {
     this.loading = true;
 
     this.articleService.getAll().subscribe({
-      next: (data) => { this.articles = data; }
+      next: (data) => { this.articles = data.content; }
     });
 
     this.reservationService.getActive().subscribe({

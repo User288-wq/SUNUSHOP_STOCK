@@ -136,7 +136,7 @@ export class ReservationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.articleService.getAll().subscribe({
-      next: (data) => { this.articles = data; },
+      next: (data) => { this.articles = data.content; },
       error: (err) => { this.errorMessage = 'Impossible de charger les articles'; }
     });
   }
