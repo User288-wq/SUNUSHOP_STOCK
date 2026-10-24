@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -52,6 +53,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PUBLIC_URLS).permitAll()
+                
+                // ✅ RÈGLES DES RÔLES : Seul un ADMIN peut créer/modifier/supprimer des articles
+                .requestMatchers(HttpMethod.POST, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
+                
+                // Tout le reste nécessite d'être juste connecté
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

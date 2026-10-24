@@ -24,49 +24,21 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 
 ---
 
-## 🎯 Aperçu
+## 📸 Aperçu de l'application
 
-SunuShop Stock est une application full-stack dockerisée qui gère :
-
-- 📦 **Articles multi-entrepôts** (CRUD complet)
-- 📊 **Mouvements de stock** (entrées/sorties)
-- 🔖 **Réservations clients Premium** (expiration 48h)
-- 📈 **Dashboard avec statistiques**
-- 🔐 **Authentification JWT** (register/login/logout)
+![Aperçu SunuShop Stock](COLLE_TON_LIEN_IMAGE_ICI)
 
 ---
 
-## ✨ Fonctionnalités
+## 🎯 Fonctionnalités Clés
 
-### 🔐 Authentification JWT
-- Inscription avec vérification d'unicité
-- Connexion avec BCrypt
-- Tokens JWT valides 24h
-- Protection des routes frontend (AuthGuard)
-- Intercepteur HTTP qui ajoute le token automatiquement
-
-### 📦 Module Articles
-- Création d'articles avec référence unique
-- Calcul automatique du stock disponible (physique - réservé)
-- Support multi-entrepôts (Dakar, Casablanca, Abidjan)
-
-### 📊 Module Mouvements
-- Enregistrement des entrées (réceptions fournisseurs)
-- Enregistrement des sorties (ventes clients)
-- Historique complet par article
-- Vérification du stock disponible avant sortie
-
-### 🔖 Module Réservations (Premium)
-- Réservations clients avec expiration automatique à 48h
-- Règle métier : maximum 30% du stock physique
-- Job planifié (@Scheduled) pour expirer les réservations
-- Annulation manuelle possible
-
-### 📈 Dashboard
-- Statistiques en temps réel
-- Top 5 articles par stock
-- Répartition par catégorie
-- Réservations actives récentes
+- 🔐 **Authentification sécurisée** : JWT avec Spring Security, mots de passe hachés en BCrypt.
+- 📦 **Gestion des articles** : CRUD complet avec calcul automatique du stock disponible.
+- 🔍 **Recherche & Pagination** : Filtrage en temps réel par référence ou désignation, avec pagination optimisée côté serveur.
+- 🔔 **Notifications (UX)** : Messages d'erreur et de succès dynamiques via `ngx-toastr`.
+- 📊 **Mouvements de stock** : Enregistrement des entrées (réceptions) et sorties (ventes).
+- 🔖 **Réservations Premium** : Expiration automatique à 48h, règle métier stricte (max 30% du stock).
+- 📚 **Documentation API** : Swagger UI intégré pour tester les endpoints directement depuis le navigateur.
 
 ---
 
@@ -82,6 +54,7 @@ SunuShop Stock est une application full-stack dockerisée qui gère :
 | Hibernate | 6.4.1 |
 | PostgreSQL | 15 |
 | JJWT | 0.11.5 |
+| Swagger (Springdoc) | 2.3.0 |
 | Maven | 3.8 |
 | Lombok | 1.18.30 |
 | JUnit 5 + Mockito | 5.10.1 + 5.7.0 |
@@ -94,24 +67,51 @@ SunuShop Stock est une application full-stack dockerisée qui gère :
 | TypeScript | 5.7 |
 | RxJS | 7.8 |
 | Zone.js | 0.15 |
+| ngx-toastr | 19.0 |
 | Jasmine + Karma | 5.6 + 6.4 |
 
-### Infrastructure
-| Technologie | Version |
+### Infrastructure & CI/CD
+| Technologie | Version / Plateforme |
 |-------------|---------|
 | Docker | 24+ |
 | Docker Compose | 2.x |
 | Nginx | alpine |
 | Node.js | 20 |
-| GitLab CI/CD | — |
+| GitLab CI/CD | Pipeline automatisé |
+| GitHub Actions / Git | Miroir de dépôt |
+| Cloudflare Pages | Hébergement Frontend |
+| Render | Hébergement Backend |
+| Neon | Base de données Serverless |
 
 ---
 
 ## 🏗️ Architecture
 
 L'application est découpée en 3 parties distinctes :
-1. **Frontend (Angular)** : Servi par Nginx (ou Cloudflare en production), il communique avec l'API via des requêtes HTTP asynchrones.
-2. **Backend (Spring Boot)** : API REST sécurisée par JWT. Il contient la logique métier (gestion du stock, règles de réservation) et communique avec la base de données via Hibernate/JPA.
-3. **Base de données (PostgreSQL)** : Stocke les données de manière persistante.
+1. **Frontend (Angular)** : Servi par Cloudflare Pages. Communique avec l'API via des requêtes HTTP sécurisées.
+2. **Backend (Spring Boot)** : API REST conteneurisée (Docker) et déployée sur Render. Contient la logique métier et sécurise les accès via JWT.
+3. **Base de données (PostgreSQL)** : Hébergée sur Neon (Serverless).
 
-*En développement, l'ensemble est orchestré via Docker Compose.*
+---
+
+## 🚀 Installation en local
+
+1. Cloner le projet :
+```bash
+git clone https://github.com/User288-wq/SUNUSHOP_STOCK.git
+cd SUNUSHOP_STOCK
+Lancer le backend (Spring Boot) :
+
+bash
+cd sunushop-backend
+mvn spring-boot:run
+Lancer le frontend (Angular) :
+
+bash
+cd sunushop-frontend
+npm install
+npm start
+L'application sera accessible sur http://localhost:4200
+**⚠️ N'oublie pas de remplacer `COLLE_TON_LIEN_IMAGE_ICI` par le lien de ta capture d'écran !** 
+
+Une fois collé, fais ton `git add .`, `git commit`, `git push origin main` (ou clique sur "Commit changes" sur GitHub). Ton profil va être ultra professionnel. 🚀🔥
