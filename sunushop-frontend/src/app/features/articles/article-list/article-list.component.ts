@@ -51,10 +51,10 @@ import { ToastrService } from 'ngx-toastr';
           </tr>
         </thead>
         <tbody>
-          <!-- Ajout de la classe low-stock si le stock est < 10 -->
+          <!-- Ajout de la classe low-stock -->
           <tr *ngFor="let article of articles" [class.low-stock]="article.currentStockPhysical < 10">
             <td><strong>{{ article.reference }}</strong></td>
-            <!-- Ajout du badge d'alerte -->
+            <!-- Ajout du badge Stock bas -->
             <td>
               {{ article.designation }}
               <span class="badge-low" *ngIf="article.currentStockPhysical < 10">⚠️ Stock bas</span>
