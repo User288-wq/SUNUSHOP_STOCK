@@ -51,9 +51,14 @@ import { ToastrService } from 'ngx-toastr';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let article of articles">
+          <!-- Ajout de la classe low-stock si le stock est < 10 -->
+          <tr *ngFor="let article of articles" [class.low-stock]="article.currentStockPhysical < 10">
             <td><strong>{{ article.reference }}</strong></td>
-            <td>{{ article.designation }}</td>
+            <!-- Ajout du badge d'alerte -->
+            <td>
+              {{ article.designation }}
+              <span class="badge-low" *ngIf="article.currentStockPhysical < 10">⚠️ Stock bas</span>
+            </td>
             <td><span class="badge">{{ article.category }}</span></td>
             <td>{{ article.currentStockPhysical }}</td>
             <td>{{ article.currentStockReserved }}</td>
@@ -120,6 +125,19 @@ import { ToastrService } from 'ngx-toastr';
     .btn-page:hover:not(:disabled) { background: #bdc3c7; }
     .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
     .page-info { font-weight: 600; color: #34495e; font-size: 15px; }
+
+    /* Styles pour les alertes de stock bas */
+    .low-stock { background-color: #fff3cd !important; }
+    .low-stock:hover { background-color: #ffe8a1 !important; }
+    .badge-low {
+      background: #e74c3c;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-left: 8px;
+    }
   `]
 })
 export class ArticleListComponent implements OnInit {
