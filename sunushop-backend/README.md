@@ -1,90 +1,130 @@
-# SunuShop Stock API
+# 📦 SunuShop Stock - Application Full-Stack
 
-![Tests](https://img.shields.io/badge/tests-25%20passed-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-85%25-success)
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-green)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
-![Docker](https://img.shields.io/badge/Docker-ready-2496ED)
+API REST et Application Web de gestion de stocks multi-entrepôts pour grossiste en fournitures de bureau.
 
-API REST de gestion de stocks multi-entrepots pour grossiste en fournitures de bureau.
+[![Tests](https://img.shields.io/badge/tests-25%20passed-brightgreen)](#)
+[![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen)](#)
+[![Java](https://img.shields.io/badge/Java-17-blue)](#)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-brightgreen)](#)
+[![Angular](https://img.shields.io/badge/Angular-19-red)](#)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)](#)
+[![Docker](https://img.shields.io/badge/Docker-ready-blue)](#)
+[![JWT](https://img.shields.io/badge/JWT-Auth-orange)](#)
 
-## Technologies
+## 🌐 Statut du projet & Déploiement
 
-- **Java 17** - Langage
-- **Spring Boot 3.2.1** - Framework
-- **Spring Data JPA + Hibernate 6** - ORM
-- **PostgreSQL 15** - Base de donnees
-- **JUnit 5 + Mockito** - Tests unitaires
-- **JaCoCo** - Couverture de code (85%)
-- **Swagger UI** - Documentation API
-- **Docker** - Conteneurisation
+- **Application Frontend (Angular) :** [https://sunushop-stock.pages.dev](https://sunushop-stock.pages.dev)
+- **API Backend (Spring Boot) :** [https://sunushop-backend.onrender.com/api/actuator/health](https://sunushop-backend.onrender.com/api/actuator/health)
+- **Documentation API (Swagger) :** [https://sunushop-backend.onrender.com/api/swagger-ui.html](https://sunushop-backend.onrender.com/api/swagger-ui.html)
+- **Pipeline CI/CD (GitLab) :** ✅ 100% Vert (Builds & Tests automatisés)
 
-## Fonctionnalites
+---
 
-- CRUD Articles
-- Mouvements de stock (receptions, sorties, ajustements)
-- Historique complet par article
-- Reservations Premium (48h d'expiration)
-- Gestion d'erreurs centralisee
-- Verrou optimiste (@Version)
-- Job planifie (@Scheduled)
+## 🛠️ Technologies
 
-## Tests
+### Backend
+*   **Java 17** - Langage
+*   **Spring Boot 3.2.1** - Framework
+*   **Spring Data JPA + Hibernate 6** - ORM
+*   **Spring Security + JWT** - Sécurité et Authentification
+*   **PostgreSQL 15** - Base de données
+*   **JUnit 5 + Mockito** - Tests unitaires
+*   **JaCoCo** - Couverture de code (85%)
+*   **Swagger UI (Springdoc)** - Documentation API
+*   **Docker** - Conteneurisation
 
-**25 tests backend - 100% de reussite - 85% de couverture**
+### Frontend
+*   **Angular 19** - Framework Frontend
+*   **TypeScript 5.7** - Langage
+*   **Chart.js / ng2-charts** - Graphiques du Dashboard
+*   **ngx-toastr** - Notifications UI
+*   **Cloudflare Pages** - Hébergement Frontend
 
-    mvn clean verify
+---
 
+## ✨ Fonctionnalités Clés
+
+*   🛡️ **Sécurité avancée (RBAC)** : Gestion des rôles (Admin/User). Seuls les administrateurs peuvent créer ou supprimer des articles.
+*   📦 **CRUD Articles** : Création, lecture, mise à jour et suppression d'articles multi-entrepôts.
+*   📊 **Mouvements de stock** : Réceptions, sorties et ajustements avec historique complet par article.
+*   🔖 **Réservations Premium** : Expiration automatique à 48h avec règle métier (max 30% du stock).
+*   📈 **Dashboard interactif** : Graphiques dynamiques (Chart.js) pour visualiser le stock par catégorie et les réservations.
+*   📊 **Export de données** : Exportation de la liste des articles au format CSV/Excel en un clic.
+*   🚨 **Alertes visuelles** : Mise en évidence des articles en rupture de stock (Stock bas).
+*   📚 **Documentation API** : Swagger UI intégré pour tester les endpoints.
+*   ⚙️ **Gestion d'erreurs centralisée** : Retours d'API propres et formatés.
+*   🔒 **Verrou optimiste** (`@Version`) pour éviter les conflits de concurrence.
+*   ⏰ **Job planifié** (`@Scheduled`) pour expirer les réservations.
+
+---
+
+## 🧪 Tests
+
+**25 tests backend** - 100% de réussite - 85% de couverture.
+
+```bash
+mvn clean verify
 Rapport de couverture : target/site/jacoco/index.html
 
-## API Endpoints
+📡 API Endpoints
+Méthode	Endpoint	Description
+GET	/api/v2/articles	Liste des articles (avec pagination & recherche)
+POST	/api/v2/articles	Créer un article (Admin uniquement)
+GET	/api/v2/articles/{id}	Détails d'un article
+POST	/api/v2/stocks/movements	Créer un mouvement de stock
+GET	/api/v2/stocks/articles/{id}/movements	Historique des mouvements
+POST	/api/v2/reservations	Créer une réservation
+DELETE	/api/v2/reservations/{id}	Annuler une réservation
+GET	/api/v2/reservations/active	Réservations actives
+GET	/api/v2/stocks/health	Health check
+🚀 Installation en local
+Prérequis
+Java 17+
 
-| Methode | Endpoint | Description |
-|---------|----------|-------------|
-| GET | /api/v2/articles | Liste des articles |
-| POST | /api/v2/articles | Creer un article |
-| GET | /api/v2/articles/{id} | Details d'un article |
-| POST | /api/v2/stocks/movements | Creer un mouvement |
-| GET | /api/v2/stocks/articles/{id}/movements | Historique |
-| POST | /api/v2/reservations | Creer une reservation |
-| DELETE | /api/v2/reservations/{id} | Annuler une reservation |
-| GET | /api/v2/reservations/active | Reservations actives |
-| GET | /api/v2/stocks/health | Health check |
+Maven 3.8+
 
-## Installation
+Node.js 20+
 
-### Prerequis
-- Java 17+
-- Maven 3.8+
-- Docker (pour PostgreSQL)
+Docker (pour PostgreSQL)
 
-### Lancement local
+Lancement
+Cloner le projet :
 
-    # 1. Demarrer PostgreSQL
-    docker compose up -d postgres
+bash
+git clone https://github.com/User288-wq/SUNUSHOP_STOCK.git
+cd SUNUSHOP_STOCK
+Démarrer PostgreSQL :
 
-    # 2. Lancer l'application
-    mvn spring-boot:run
+bash
+docker compose up -d postgres
+Lancer le Backend :
 
-L'application demarre sur **http://localhost:8081/api**
+bash
+cd sunushop-backend
+mvn spring-boot:run
+(L'API démarre sur http://localhost:8081/api)
 
-### Swagger UI
+Lancer le Frontend :
 
-**http://localhost:8081/api/swagger-ui.html**
+bash
+cd sunushop-frontend
+npm install --legacy-peer-deps
+npm start
+(L'application démarre sur http://localhost:4200)
 
-## Docker
+🐳 Docker
+bash
+# Build de l'image
+docker build -t sunushop-backend ./sunushop-backend
 
-    # Build de l'image
-    docker build -t sunushop-backend .
+# Lancer avec docker compose (depuis la racine)
+docker compose up -d
+👨‍💻 Auteur
+Diaraf Diouf - Développeur Full-Stack
 
-    # Lancer avec docker compose (depuis la racine)
-    docker compose up -d backend
+LinkedIn (N'oublie pas de mettre ton lien ici !)
 
-## Auteur
+GitHub
 
-**Diaraf Diouf** - Developpeur Full-Stack
-
-## Licence
-
-Proprietaire - SunuShop
+📝 Licence
+Propriétaire - SunuShop
