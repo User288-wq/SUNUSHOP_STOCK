@@ -24,6 +24,8 @@ import { ToastrService } from 'ngx-toastr';
           <a routerLink="/stocks/movement" class="btn-movement">Mouvement</a>
           <a routerLink="/reservations" class="btn-reservation">Reservations</a>
           <a *ngIf="authService.isAdmin()" routerLink="/articles/new" class="btn-new">+ Article</a>
+          <!-- BOUTON UTILISATEURS AJOUTÉ ICI -->
+          <a *ngIf="authService.isAdmin()" routerLink="/users" class="btn-users">👥 Utilisateurs</a>
         </div>
       </div>
 
@@ -51,10 +53,8 @@ import { ToastrService } from 'ngx-toastr';
           </tr>
         </thead>
         <tbody>
-          <!-- Ajout de la classe low-stock -->
           <tr *ngFor="let article of articles" [class.low-stock]="article.currentStockPhysical < 10">
             <td><strong>{{ article.reference }}</strong></td>
-            <!-- Ajout du badge Stock bas -->
             <td>
               {{ article.designation }}
               <span class="badge-low" *ngIf="article.currentStockPhysical < 10">⚠️ Stock bas</span>
@@ -104,6 +104,9 @@ import { ToastrService } from 'ngx-toastr';
     .btn-reservation:hover { background: #8e44ad; }
     .btn-new { background: #27ae60; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; }
     .btn-new:hover { background: #229954; }
+    /* STYLE DU BOUTON UTILISATEURS AJOUTÉ ICI */
+    .btn-users { background: #8e44ad; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; }
+    .btn-users:hover { background: #71368a; }
     
     .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
     .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; outline: none; }

@@ -54,12 +54,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PUBLIC_URLS).permitAll()
                 
-                // ✅ RÈGLES DES RÔLES : Seul un ADMIN peut créer/modifier/supprimer des articles
+                // Regles pour les articles (Admin uniquement)
                 .requestMatchers(HttpMethod.POST, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/v2/articles/**").hasAuthority("ROLE_ADMIN")
                 
-                // Tout le reste nécessite d'être juste connecté
+                // Regle pour les utilisateurs (Admin uniquement)
+                .requestMatchers("/v2/users/**").hasAuthority("ROLE_ADMIN")
+                
+                // Tout le reste necessite d'etre connecte
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
