@@ -2,6 +2,7 @@ package com.sunushop.service;
 
 import com.sunushop.model.dto.UserDto;
 import com.sunushop.model.entity.User;
+import com.sunushop.model.enums.Role;
 import com.sunushop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,14 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         
-        user.setRole(newRole);
+        // On convertit le String en enum Role
+        try {
+            Role role = Role.valueOf(newRole.toUpperCase());
+            user.setRole(role);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Rôle invalide : " + newRole);
+        }
+        
         User saved = userRepository.save(user);
         return toDto(saved);
     }
@@ -46,7 +54,7 @@ public class UserService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .role(user.getRole())
+                .role(user.getRole().name()) // On convertit l'enum en String
                 .build();
     }
 }
