@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-user-list',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  template: 
+  template: `
     <div class="container">
       <div class="header">
         <div>
@@ -43,7 +43,7 @@ import { ToastrService } from 'ngx-toastr';
               </span>
             </td>
             <td class="actions-cell">
-              <select [value]="user.role" (change)="onRoleChange(user, \)" class="role-select" [disabled]="user.username === 'diaraf'">
+              <select [value]="user.role" (change)="onRoleChange(user, $event)" class="role-select" [disabled]="user.username === 'diaraf'">
                 <option value="USER">USER</option>
                 <option value="ADMIN">ADMIN</option>
               </select>
@@ -57,8 +57,8 @@ import { ToastrService } from 'ngx-toastr';
 
       <p *ngIf="!loading && users.length === 0" class="empty">Aucun utilisateur trouvé.</p>
     </div>
-  ,
-  styles: [
+  `,
+  styles: [`
     .container { padding: 30px; max-width: 1200px; margin: 0 auto; }
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     h1 { color: #2c3e50; margin: 0 0 5px 0; }
@@ -79,7 +79,7 @@ import { ToastrService } from 'ngx-toastr';
     .btn-delete:hover:not(:disabled) { background: #c0392b; }
     .btn-delete:disabled { background: #bdc3c7; cursor: not-allowed; }
     .empty { text-align: center; color: #95a5a6; padding: 60px; font-size: 16px; background: white; border-radius: 8px; margin-top: 20px; }
-  ]
+  `]
 })
 export class UserListComponent implements OnInit {
   users: UserDto[] = [];
@@ -118,7 +118,7 @@ export class UserListComponent implements OnInit {
     this.userService.updateRole(user.id, newRole).subscribe({
       next: (updatedUser) => {
         user.role = updatedUser.role;
-        this.toastr.success(\Rôle de \ mis à jour en \\, 'Succès');
+        this.toastr.success(`Rôle de ${user.username} mis à jour en ${newRole}`, 'Succès');
       },
       error: (err) => {
         this.toastr.error('Erreur lors de la mise à jour du rôle', 'Erreur');
@@ -128,7 +128,7 @@ export class UserListComponent implements OnInit {
   }
 
   deleteUser(user: UserDto): void {
-    if (!confirm(\Voulez-vous vraiment supprimer l'utilisateur \ ?\)) return;
+    if (!confirm(`Voulez-vous vraiment supprimer l'utilisateur ${user.username} ?`)) return;
 
     this.userService.deleteUser(user.id).subscribe({
       next: () => {
