@@ -1,7 +1,5 @@
 stages:
   - backend-build
-  - backend-test
-  - frontend-test
   - frontend-build
 
 variables:
@@ -18,37 +16,10 @@ backend-build:
   image: maven:3.8-openjdk-17
   script:
     - cd sunushop-backend
-    - mvn clean compile -B
-  only:
-    - main
-    - merge_requests
-
-backend-test:
-  stage: backend-test
-  image: maven:3.8-openjdk-17
-  script:
-    - cd sunushop-backend
     - mvn clean package -Dmaven.test.skip=true -B
   artifacts:
-    when: always
     paths:
       - sunushop-backend/target/*.jar
-    expire_in: 1 week
-  only:
-    - main
-    - merge_requests
-
-frontend-test:
-  stage: frontend-test
-  image: node:20-alpine
-  script:
-    - cd sunushop-frontend
-    - npm install --legacy-peer-deps
-    - echo "Tests ignorés pour le déploiement"
-    - npm run build -- --configuration production
-  artifacts:
-    paths:
-      - sunushop-frontend/dist/
     expire_in: 1 week
   only:
     - main
@@ -67,3 +38,4 @@ frontend-build:
     expire_in: 1 week
   only:
     - main
+    - merge_requests
