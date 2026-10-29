@@ -26,10 +26,6 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         
-<<<<<<< HEAD
-=======
-        // On convertit le String en enum Role
->>>>>>> 11232381a906bb4208f7e11a44177b25aaa74645
         try {
             Role role = Role.valueOf(newRole.toUpperCase());
             user.setRole(role);
@@ -57,11 +53,7 @@ public class UserService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-<<<<<<< HEAD
                 .role(user.getRole().name())
-=======
-                .role(user.getRole().name()) // On convertit l'enum en String
->>>>>>> 11232381a906bb4208f7e11a44177b25aaa74645
                 .build();
     }
 }
