@@ -45,4 +45,8 @@ public class Reservation {
 
     @Version
     private Integer version;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean expirationEmailSent = false;
 }
