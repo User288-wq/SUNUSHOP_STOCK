@@ -33,11 +33,14 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 ## 🎯 Fonctionnalités Clés
 
 - 🔐 **Authentification sécurisée** : JWT avec Spring Security, mots de passe hachés en BCrypt.
+- 🛡️ **Gestion des utilisateurs (RBAC)** : Panneau d'administration permettant de changer les rôles (User/Admin) et de supprimer des comptes.
 - 📦 **Gestion des articles** : CRUD complet avec calcul automatique du stock disponible.
 - 🔍 **Recherche & Pagination** : Filtrage en temps réel par référence ou désignation, avec pagination optimisée côté serveur.
 - 🔔 **Notifications (UX)** : Messages d'erreur et de succès dynamiques via `ngx-toastr`.
 - 📊 **Mouvements de stock** : Enregistrement des entrées (réceptions) et sorties (ventes).
 - 🔖 **Réservations Premium** : Expiration automatique à 48h, règle métier stricte (max 30% du stock).
+- 📈 **Dashboard interactif** : Graphiques dynamiques (Chart.js) pour visualiser le stock par catégorie et les réservations.
+- 📊 **Export de données** : Exportation de la liste des articles au format CSV/Excel en un clic.
 - 📚 **Documentation API** : Swagger UI intégré pour tester les endpoints directement depuis le navigateur.
 
 ---
@@ -77,7 +80,7 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 | Docker Compose | 2.x |
 | Nginx | alpine |
 | Node.js | 20 |
-| GitLab CI/CD | Pipeline automatisé |
+| GitLab CI/CD | Pipeline automatisé (100% vert ✅) |
 | GitHub Actions / Git | Miroir de dépôt |
 | Cloudflare Pages | Hébergement Frontend |
 | Render | Hébergement Backend |
@@ -100,18 +103,15 @@ L'application est découpée en 3 parties distinctes :
 ```bash
 git clone https://github.com/User288-wq/SUNUSHOP_STOCK.git
 cd SUNUSHOP_STOCK
-Lancer le backend (Spring Boot) :
+2. Lancer le backend (Spring Boot) :
 
 bash
 cd sunushop-backend
 mvn spring-boot:run
-Lancer le frontend (Angular) :
+3. Lancer le frontend (Angular) :
 
 bash
 cd sunushop-frontend
-npm install
-npm start
+npm install --legacy-peer-deps
+npx ng serve
 L'application sera accessible sur http://localhost:4200
-**⚠️ N'oublie pas de remplacer `COLLE_TON_LIEN_IMAGE_ICI` par le lien de ta capture d'écran !** 
-
-Une fois collé, fais ton `git add .`, `git commit`, `git push origin main` (ou clique sur "Commit changes" sur GitHub). Ton profil va être ultra professionnel. 🚀🔥
