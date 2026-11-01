@@ -16,6 +16,18 @@ spring:
         format_sql: true
   flyway:
     enabled: false
+  mail:
+    host: ${SPRING_MAIL_HOST:sandbox.smtp.mailtrap.io}
+    port: ${SPRING_MAIL_PORT:2525}
+    username: ${SPRING_MAIL_USERNAME:placeholder}
+    password: ${SPRING_MAIL_PASSWORD:placeholder}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 server:
   port: ${PORT:8081}
@@ -44,6 +56,11 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     operationsSorter: method
+
+sunushop:
+  mail:
+    from: ${SUNUSHOP_MAIL_FROM:noreply@sunushop.com}
+  low-stock-threshold: ${SUNUSHOP_LOW_STOCK_THRESHOLD:5}
 
 logging:
   level:

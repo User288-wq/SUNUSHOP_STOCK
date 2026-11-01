@@ -1,5 +1,5 @@
 services:
-  # ===== BASE DE DONNÉES =====
+  # ===== BASE DE DONNÃ‰ES =====
   postgres:
     image: postgres:15
     container_name: sunushop-postgres
@@ -30,6 +30,11 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/sunushop
       DB_USERNAME: sunu
       DB_PASSWORD: sunu123
+      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-sandbox.smtp.mailtrap.io}
+      SPRING_MAIL_PORT: ${SPRING_MAIL_PORT:-2525}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-placeholder}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-placeholder}
+      SUNUSHOP_MAIL_FROM: ${SUNUSHOP_MAIL_FROM:-noreply@sunushop.com}
     ports:
       - "8081:8081"
     depends_on:
