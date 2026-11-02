@@ -39,6 +39,7 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 - 🔔 **Notifications (UX)** : Messages d'erreur et de succès dynamiques via `ngx-toastr`.
 - 📊 **Mouvements de stock** : Enregistrement des entrées (réceptions) et sorties (ventes).
 - 🔖 **Réservations Premium** : Expiration automatique à 48h, règle métier stricte (max 30% du stock).
+- 📧 **Notifications Email** : Envoi automatique d'emails (via Spring Mail + Mailtrap) pour les alertes de stock bas et les rappels de réservation, avec templates HTML et tâches planifiées (`@Scheduled`).
 - 📈 **Dashboard interactif** : Graphiques dynamiques (Chart.js) pour visualiser le stock par catégorie et les réservations.
 - 📊 **Export de données** : Exportation de la liste des articles au format CSV/Excel en un clic.
 - 📚 **Documentation API** : Swagger UI intégré pour tester les endpoints directement depuis le navigateur.
@@ -58,6 +59,7 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 | PostgreSQL | 15 |
 | JJWT | 0.11.5 |
 | Swagger (Springdoc) | 2.3.0 |
+| Spring Mail | 3.2.1 |
 | Maven | 3.8 |
 | Lombok | 1.18.30 |
 | JUnit 5 + Mockito | 5.10.1 + 5.7.0 |
@@ -85,6 +87,7 @@ Application de gestion de stock multi-entrepôts avec réservations Premium 48h 
 | Cloudflare Pages | Hébergement Frontend |
 | Render | Hébergement Backend |
 | Neon | Base de données Serverless |
+| Mailtrap | Service de test d'emails SMTP |
 
 ---
 
@@ -100,18 +103,19 @@ L'application est découpée en 3 parties distinctes :
 ## 🚀 Installation en local
 
 1. Cloner le projet :
-```bash
+
 git clone https://github.com/User288-wq/SUNUSHOP_STOCK.git
 cd SUNUSHOP_STOCK
 2. Lancer le backend (Spring Boot) :
 
-bash
 cd sunushop-backend
 mvn spring-boot:run
+
 3. Lancer le frontend (Angular) :
 
-bash
 cd sunushop-frontend
 npm install --legacy-peer-deps
 npx ng serve
+
+
 L'application sera accessible sur http://localhost:4200
