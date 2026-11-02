@@ -158,7 +158,7 @@ public class EmailService {
             helper.setText(htmlContent, true);
             mailSender.send(message);
             log.info("Email envoye a {}", to);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Echec de l envoi d email a {} : {}", to, e.getMessage());
         }
     }
