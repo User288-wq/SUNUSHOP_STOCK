@@ -16,6 +16,8 @@ public class ArticleDto {
     private String reference;
     private String designation;
     private String category;
+
+    private String imageUrl;
     private Integer currentStockPhysical;
     private Integer currentStockReserved;
     private Integer currentStockAvailable;

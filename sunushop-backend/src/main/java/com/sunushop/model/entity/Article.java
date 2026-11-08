@@ -28,6 +28,8 @@ public class Article {
     @Column(length = 50)
     private String category;
 
+    private String imageUrl;
+
     @Column(name = "current_stock_physical")
     @Builder.Default
     private Integer currentStockPhysical = 0;

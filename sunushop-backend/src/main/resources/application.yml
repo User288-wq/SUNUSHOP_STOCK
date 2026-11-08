@@ -67,3 +67,7 @@ logging:
     com.sunushop: INFO
     org.springframework.web: WARN
     org.hibernate.SQL: WARN
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:aajoj7dd}
+  api-key: ${CLOUDINARY_API_KEY:799618931576316}
+  api-secret: ${CLOUDINARY_API_SECRET:placeholder}

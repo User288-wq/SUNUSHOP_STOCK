@@ -60,3 +60,6 @@ sunushop-fullstack/
 
 # Backups
 *.backup
+
+# Fichier d'environnement (secrets)
+.env
